@@ -253,6 +253,77 @@ button{
     }
 
 }
+
+/* Popup */
+
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    backdrop-filter:blur(6px);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.35s;
+    z-index:9999;
+}
+
+.popup-overlay.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.popup-card{
+    width:min(90%,380px);
+    background:rgba(11,45,11,.95);
+    border:1px solid rgba(111,226,138,.2);
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    color:#F5FFF6;
+    transform:scale(.85);
+    transition:.35s;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+
+.popup-overlay.show .popup-card{
+    transform:scale(1);
+}
+
+.popup-icon{
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+.popup-card h2{
+    margin-bottom:12px;
+}
+
+.popup-card p{
+    color:#CBE8D1;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.popup-card button{
+    border:none;
+    background:#6FE28A;
+    color:#031c03;
+    font-weight:bold;
+    padding:12px 28px;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.popup-card button:hover{
+    background:#92F7AE;
+}
 </style>
 </head>
 
@@ -365,14 +436,65 @@ button{
 
 </div>
 
-<script>
-function yesClicked(){
-    alert("Yay! 💚 I can't wait to spend this day with you. 🌿");
-}
+<!-- Popup -->
+<div id="popup" class="popup-overlay">
 
-function noClicked(){
-    alert("That's okay 😊 No pressure at all. Your happiness comes first.");
-}
+    <div class="popup-card">
+
+        <div class="popup-icon">💚</div>
+
+        <h2 id="popupTitle">Yay!</h2>
+
+        <p id="popupMessage">
+            I can't wait to spend this day with you.
+        </p>
+
+        <button onclick="closePopup()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+    const popup = document.getElementById("popup");
+    const popupTitle = document.getElementById("popupTitle");
+    const popupMessage = document.getElementById("popupMessage");
+
+    function showPopup(title, message, icon = "💚") {
+        document.querySelector(".popup-icon").textContent = icon;
+        popupTitle.textContent = title;
+        popupMessage.textContent = message;
+        popup.classList.add("show");
+    }
+
+    function closePopup() {
+        popup.classList.remove("show");
+    }
+
+    function yesClicked() {
+        showPopup(
+            "Yay! 💚",
+            "I'm really looking forward to spending this day with you. I promise to make it fun, cozy, and full of wonderful memories. 🌿",
+            "🥹"
+        );
+    }
+
+    function noClicked() {
+        showPopup(
+            "No worries 🤍",
+            "There's absolutely no pressure. Your comfort and happiness mean the most to me. 💚",
+            "🌿"
+        );
+    }
+
+    // Close popup when clicking outside the card
+    popup.addEventListener("click", function(e) {
+        if (e.target === popup) {
+            closePopup();
+        }
+    });
 </script>
 
 </body>
